@@ -98,34 +98,6 @@
                 "linuxarm32",
                 "osxuniversal"
             ]
-        },
-        {
-            "groupId": "edu.wpi.first.thirdparty.imguiSuite",
-            "artifactId": "imguiSuite-cpp",
-            "version": "2026.+",
-            "libName": "imguiSuite",
-            "headerClassifier": "headers",
-            "sharedLibrary": false,
-            "skipInvalidPlatforms": true,
-            "binaryPlatforms": [
-                "windowsx86-64",
-                "linuxx86-64",
-                "osxuniversal"
-            ]
-        },
-        {
-            "groupId": "edu.wpi.first.wpigui",
-            "artifactId": "wpigui-cpp",
-            "version": "2026.+",
-            "libName": "wpigui", 
-            "headerClassifier": "headers",
-            "sharedLibrary": false,
-            "skipInvalidPlatforms": true,
-            "binaryPlatforms": [
-                "windowsx86-64",
-                "linuxx86-64", 
-                "osxuniversal"
-            ]
         }
     ]
 }
