@@ -7,13 +7,20 @@ import com.lumynlabs.connection.usb.USBPort;
 import com.lumynlabs.devices.ConnectorXAnimate;
 import com.lumynlabs.domain.config.ConfigBuilder;
 import com.lumynlabs.domain.led.Animation;
+import com.lumynlabs.domain.led.DirectLED;
 import com.lumynlabs.domain.led.MatrixTextScrollDirection;
 
 import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
+
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
 
 /**
  * Lumyn Labs ConnectorXAnimate Demo
@@ -27,9 +34,21 @@ public class Robot extends TimedRobot {
   private static final Color kSecondary = new Color(new Color8Bit(255, 200, 0));
   private static final Color kAccent = new Color(new Color8Bit(255, 255, 255));
 
+  private static final String kDirectLedZone = "left-climber";
+  private static final int kDirectLedLength = 30;
+
+  private DirectLED m_directLed;
+  private AddressableLEDBuffer m_directLedBuffer;
+  private boolean m_directLedEnabled = false;
+
+  private static final Distance kLedSpacing = Meters.of(1.0 / 120.0);
+  private final LEDPattern mRainbow = LEDPattern.rainbow(255, 128);
+  private final LEDPattern mScrollingRainbow = mRainbow.scrollAtAbsoluteSpeed(MetersPerSecond.of(0.1), kLedSpacing);
+
   private boolean m_lastA, m_lastB, m_lastX, m_lastY;
   private boolean m_lastLB, m_lastRB, m_lastLT, m_lastRT;
   private boolean m_lastStart, m_lastBack;
+  private boolean m_lastRS;
 
   @Override
   public void robotInit() {
@@ -37,22 +56,25 @@ public class Robot extends TimedRobot {
     if (isSimulation()) {
       m_leds.ApplyConfiguration(buildConfig());
     }
+
+    m_directLedBuffer = new AddressableLEDBuffer(kDirectLedLength);
+    m_directLed = m_leds.leds.createDirectLED(kDirectLedZone, kDirectLedLength);
   }
 
   private com.lumynlabs.domain.config.LumynDeviceConfig buildConfig() {
     return new ConfigBuilder()
         .forTeam("9999")
         // Channels
-        .addChannel("climbers", 60)
+        .addChannel(1, "climbers", 60)
             .addStripZone("left-climber", 30, false)
             .addStripZone("right-climber", 30, true)
         .endChannel()
         
-        .addChannel("front", 256)
+        .addChannel(2, "front", 256)
             .addMatrixZone("front-matrix", 16, 16)
         .endChannel()
         
-        .addChannel("back", 256)
+        .addChannel(3, "back", 256)
             .addMatrixZone("back-matrix", 8, 32)
         .endChannel()
         
@@ -77,6 +99,14 @@ public class Robot extends TimedRobot {
         .endBitmap()
         
         .build();
+  }
+
+  @Override
+  public void robotPeriodic() {
+    if (m_directLedEnabled && m_directLed != null && m_directLedBuffer != null) {
+      mScrollingRainbow.applyTo(m_directLedBuffer);
+      m_directLed.update(m_directLedBuffer);
+    }
   }
 
   @Override
@@ -174,12 +204,19 @@ public class Robot extends TimedRobot {
       m_leds.leds.SetGroupColor("all", new Color(0, 0, 0));
     }
     m_lastBack = m_controller.getBackButton();
+
+    if (pressed(m_controller.getRightStickButton(), m_lastRS)) {
+      m_directLedEnabled = !m_directLedEnabled;
+      if (!m_directLedEnabled && m_directLed != null) {
+        m_directLed.reset();
+      }
+    }
+    m_lastRS = m_controller.getRightStickButton();
   }
 
   private static boolean pressed(boolean current, boolean last) { return current && !last; }
   private static Color color(int r, int g, int b) { return new Color(new Color8Bit(r, g, b)); }
 
-  @Override public void robotPeriodic() {}
   @Override public void disabledPeriodic() {}
   @Override public void autonomousPeriodic() {}
   @Override public void testInit() {}

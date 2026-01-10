@@ -1,6 +1,12 @@
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2026.1.1-beta-1"
+    id "edu.wpi.first.GradleRIO" version "2026.1.1"
+}
+
+
+repositories {
+    mavenLocal()
+    mavenCentral()
 }
 
 java {
