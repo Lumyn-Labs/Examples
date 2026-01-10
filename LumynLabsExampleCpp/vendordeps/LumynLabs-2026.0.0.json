@@ -1,8 +1,8 @@
 {
-    "fileName": "LumynLabs.json",
+    "fileName": "LumynLabs-2026.0.0.json",
     "name": "LumynLabs",
-    "version": "2026.0.0-beta-1",
-    "frcYear": "2026beta",
+    "version": "2026.0.0",
+    "frcYear": "2026",
     "uuid": "eebd34fc-a6d3-48a2-a286-ac1cec59ab89",
     "mavenUrls": [
         "https://packages.lumynlabs.com/repo"
@@ -12,14 +12,14 @@
         {
             "groupId": "com.lumynlabs.frc",
             "artifactId": "LumynLabs-java",
-            "version": "2026.0.0-beta-1"
+            "version": "2026.0.0"
         }
     ],
     "jniDependencies": [
         {
             "groupId": "com.lumynlabs.frc",
             "artifactId": "LumynLabs-driver",
-            "version": "2026.0.0-beta-1",
+            "version": "2026.0.0",
             "skipInvalidPlatforms": true,
             "isJar": false,
             "validPlatforms": [
@@ -34,7 +34,7 @@
         {
             "groupId": "com.lumynlabs.frc",
             "artifactId": "LumynLabs-common",
-            "version": "2026.0.0-beta-1",
+            "version": "2026.0.0",
             "skipInvalidPlatforms": true,
             "isJar": false,
             "validPlatforms": [
@@ -51,7 +51,7 @@
         {
             "groupId": "com.lumynlabs.frc",
             "artifactId": "LumynLabs-cpp",
-            "version": "2026.0.0-beta-1",
+            "version": "2026.0.0",
             "libName": "Lumyn",
             "headerClassifier": "headers",
             "sharedLibrary": true,
@@ -68,7 +68,7 @@
         {
             "groupId": "com.lumynlabs.frc",
             "artifactId": "LumynLabs-driver",
-            "version": "2026.0.0-beta-1",
+            "version": "2026.0.0",
             "libName": "LumynDriver",
             "headerClassifier": "headers",
             "sharedLibrary": true,
@@ -85,7 +85,7 @@
         {
             "groupId": "com.lumynlabs.frc",
             "artifactId": "LumynLabs-common",
-            "version": "2026.0.0-beta-1",
+            "version": "2026.0.0",
             "libName": "LumynCommon",
             "headerClassifier": "headers",
             "sharedLibrary": true,

@@ -13,6 +13,9 @@ void Robot::RobotInit() {
   if (frc::RobotBase::IsSimulation()) {
     ApplyConfig();
   }
+
+  m_directLed = std::make_unique<lumyn::device::DirectLED>(
+      m_leds.CreateDirectLED(kDirectLedZone, kDirectLedLength));
 }
 
 void Robot::ApplyConfig() {
@@ -21,18 +24,18 @@ void Robot::ApplyConfig() {
       .ForTeam("9999")
 
   // Channels
-      .AddChannel("climbers", 60)
+      .AddChannel(1, "climbers", 60)
           .AddStripZone("left-climber", 30, false)
           .AddStripZone("right-climber", 30, true)
           .EndChannel()
 
       
-      .AddChannel("front", 256)
+      .AddChannel(2, "front", 256)
           .AddMatrixZone("front-matrix", 16, 16)
           .EndChannel()
 
       
-      .AddChannel("back", 256)
+      .AddChannel(3, "back", 256)
           .AddMatrixZone("back-matrix", 8, 32)
           .EndChannel()
 
@@ -59,6 +62,13 @@ void Robot::ApplyConfig() {
       .Build();
 
   m_leds.ApplyConfiguration(config);
+}
+
+void Robot::RobotPeriodic() {
+  if (m_directLedEnabled && m_directLed) {
+    m_scrollingRainbow.ApplyTo(m_directLedBuffer);
+    m_directLed->Update(m_directLedBuffer);
+  }
 }
 
 void Robot::DisabledInit() {
@@ -154,6 +164,14 @@ void Robot::TeleopPeriodic() {
     m_leds.SetGroupColor("all", frc::Color{0, 0, 0});
   }
   m_lastBack = m_controller.GetBackButton();
+
+  if (Pressed(m_controller.GetRightStickButton(), m_lastRS)) {
+    m_directLedEnabled = !m_directLedEnabled;
+    if (!m_directLedEnabled && m_directLed) {
+      m_directLed->Reset();
+    }
+  }
+  m_lastRS = m_controller.GetRightStickButton();
 }
 
 #ifndef RUNNING_FRC_TESTS

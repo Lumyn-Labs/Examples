@@ -18,6 +18,7 @@ The examples use an Xbox controller to trigger different effects:
 | RT | Play image sequence on front matrix |
 | Start | Set all zones to primary color |
 | Back | Turn off all zones |
+| RS | Toggle DirectLED rainbow on left climber |
 
 ## Running on Hardware
 
