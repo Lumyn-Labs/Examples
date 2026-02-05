@@ -42,10 +42,6 @@ void Robot::ApplyConfig() {
   // Groups
       .AddGroup("climbers").AddZone("left-climber").AddZone("right-climber").EndGroup()
       .AddGroup("matrices").AddZone("front-matrix").AddZone("back-matrix").EndGroup()
-      .AddGroup("all")
-          .AddZone("left-climber").AddZone("right-climber")
-          .AddZone("front-matrix").AddZone("back-matrix")
-          .EndGroup()
 
   // Sequences
       .AddSequence("celebrate")
@@ -73,7 +69,7 @@ void Robot::RobotPeriodic() {
 
 void Robot::DisabledInit() {
   m_leds.SetAnimation(lumyn::led::Animation::Breathe)
-      .ForGroup("all").WithColor(kPrimary).WithDelay(5_ms).RunOnce(false);
+    .ForGroup("climbers").WithColor(kPrimary).WithDelay(5_ms).RunOnce(false);
   m_leds.SetText("").ForZone("front-matrix").RunOnce(true);
 }
 
@@ -88,7 +84,7 @@ void Robot::AutonomousInit() {
 
 void Robot::TeleopInit() {
   m_leds.SetAnimation(lumyn::led::Animation::Breathe)
-      .ForGroup("all").WithColor(kPrimary).WithDelay(5_ms).RunOnce(false);
+    .ForGroup("climbers").WithColor(kPrimary).WithDelay(5_ms).RunOnce(false);
   m_leds.SetText("").ForZone("front-matrix").RunOnce(true);
 }
 
@@ -109,8 +105,8 @@ void Robot::TeleopPeriodic() {
 
   
   if (Pressed(m_controller.GetXButton(), m_lastX)) {
-    m_leds.SetAnimation(lumyn::led::Animation::RainbowCycle)
-        .ForGroup("all").WithDelay(10_ms).RunOnce(false);
+  m_leds.SetAnimation(lumyn::led::Animation::RainbowCycle)
+    .ForGroup("climbers").WithDelay(10_ms).RunOnce(false);
   }
   m_lastX = m_controller.GetXButton();
 
@@ -155,13 +151,15 @@ void Robot::TeleopPeriodic() {
 
   
   if (Pressed(m_controller.GetStartButton(), m_lastStart)) {
-    m_leds.SetGroupColor("all", kPrimary);
+    m_leds.SetGroupColor("climbers", kPrimary);
+    m_leds.SetGroupColor("matrices", kPrimary);
   }
   m_lastStart = m_controller.GetStartButton();
 
   
   if (Pressed(m_controller.GetBackButton(), m_lastBack)) {
-    m_leds.SetGroupColor("all", frc::Color{0, 0, 0});
+    m_leds.SetGroupColor("climbers", frc::Color{0, 0, 0});
+    m_leds.SetGroupColor("matrices", frc::Color{0, 0, 0});
   }
   m_lastBack = m_controller.GetBackButton();
 
