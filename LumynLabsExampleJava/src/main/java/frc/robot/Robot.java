@@ -81,10 +81,6 @@ public class Robot extends TimedRobot {
         // Groups
         .addGroup("climbers").addZone("left-climber").addZone("right-climber").endGroup()
         .addGroup("matrices").addZone("front-matrix").addZone("back-matrix").endGroup()
-        .addGroup("all")
-            .addZone("left-climber").addZone("right-climber")
-            .addZone("front-matrix").addZone("back-matrix")
-        .endGroup()
         
         // Sequences
         .addSequence("celebrate")
@@ -111,8 +107,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    m_leds.leds.SetAnimation(Animation.Breathe)
-        .ForGroup("all").WithColor(kPrimary).WithDelay(Units.Milliseconds.of(5)).RunOnce(false);
+  m_leds.leds.SetAnimation(Animation.Breathe)
+    .ForGroup("climbers").WithColor(kPrimary).WithDelay(Units.Milliseconds.of(5)).RunOnce(false);
     m_leds.leds.SetText("").ForZone("front-matrix").RunOnce(true);
   }
 
@@ -127,8 +123,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    m_leds.leds.SetAnimation(Animation.Breathe)
-        .ForGroup("all").WithColor(kPrimary).WithDelay(Units.Milliseconds.of(5)).RunOnce(false);
+  m_leds.leds.SetAnimation(Animation.Breathe)
+    .ForGroup("climbers").WithColor(kPrimary).WithDelay(Units.Milliseconds.of(5)).RunOnce(false);
     m_leds.leds.SetText("").ForZone("front-matrix").RunOnce(true);
   }
 
@@ -150,8 +146,8 @@ public class Robot extends TimedRobot {
 
     
     if (pressed(m_controller.getXButton(), m_lastX)) {
-      m_leds.leds.SetAnimation(Animation.RainbowCycle)
-          .ForGroup("all").WithDelay(Units.Milliseconds.of(10)).RunOnce(false);
+    m_leds.leds.SetAnimation(Animation.RainbowCycle)
+      .ForGroup("climbers").WithDelay(Units.Milliseconds.of(10)).RunOnce(false);
     }
     m_lastX = m_controller.getXButton();
 
@@ -195,13 +191,15 @@ public class Robot extends TimedRobot {
 
     
     if (pressed(m_controller.getStartButton(), m_lastStart)) {
-      m_leds.leds.SetGroupColor("all", kPrimary);
+      m_leds.leds.SetGroupColor("climbers", kPrimary);
+      m_leds.leds.SetGroupColor("matrices", kPrimary);
     }
     m_lastStart = m_controller.getStartButton();
 
     
     if (pressed(m_controller.getBackButton(), m_lastBack)) {
-      m_leds.leds.SetGroupColor("all", new Color(0, 0, 0));
+      m_leds.leds.SetGroupColor("climbers", new Color(0, 0, 0));
+      m_leds.leds.SetGroupColor("matrices", new Color(0, 0, 0));
     }
     m_lastBack = m_controller.getBackButton();
 

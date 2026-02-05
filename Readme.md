@@ -10,14 +10,14 @@ The examples use an Xbox controller to trigger different effects:
 |--------|--------|
 | A | Chase animation on climbers |
 | B | Fire animation on left climber |
-| X | Rainbow cycle on all zones |
+| X | Rainbow cycle on climbers |
 | Y | Scrolling "GO TEAM!" text on matrices |
 | LB | Sparkle animation on climbers |
 | RB | Heartbeat animation on climbers |
 | LT | Play "celebrate" sequence |
 | RT | Play image sequence on front matrix |
-| Start | Set all zones to primary color |
-| Back | Turn off all zones |
+| Start | Set climbers and matrices to primary color |
+| Back | Turn off climbers and matrices |
 | RS | Toggle DirectLED rainbow on left climber |
 
 ## Running on Hardware
