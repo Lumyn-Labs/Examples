@@ -1,0 +1,74 @@
+{
+    "team": "9999",
+    "network": {
+        "mode": "USB"
+    },
+    "channels": {
+        "1": {
+            "id": "1",
+            "length": 144,
+            "brightness": 100,
+            "zones": [
+                {
+                    "id": "main",
+                    "type": "strip",
+                    "length": 144,
+                    "brightness": 100
+                }
+            ]
+        }
+    },
+    
+    "groups": [
+        {
+            "id": "all_leds",
+            "zoneIds": ["main"]
+        }
+    ],
+    
+    "sequences": [
+        {
+            "id": "startup",
+            "steps": [
+                {
+                    "animationId": "FadeIn",
+                    "color": { "r": 0, "g": 255, "b": 0 },
+                    "delay": 30,
+                    "reversed": false,
+                    "repeat": 1
+                },
+                {
+                    "animationId": "Fill",
+                    "color": { "r": 0, "g": 255, "b": 0 },
+                    "delay": -1,
+                    "reversed": false,
+                    "repeat": 0
+                }
+            ]
+        },
+        {
+            "id": "alliance_red",
+            "steps": [
+                {
+                    "animationId": "Fill",
+                    "color": { "r": 255, "g": 0, "b": 0 },
+                    "delay": -1,
+                    "reversed": false,
+                    "repeat": 0
+                }
+            ]
+        },
+        {
+            "id": "alliance_blue",
+            "steps": [
+                {
+                    "animationId": "Fill",
+                    "color": { "r": 0, "g": 0, "b": 255 },
+                    "delay": -1,
+                    "reversed": false,
+                    "repeat": 0
+                }
+            ]
+        }
+    ]
+}
