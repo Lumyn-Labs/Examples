@@ -47,7 +47,7 @@ public class LEDSystem {
 
     private com.lumynlabs.domain.config.LumynDeviceConfig buildConfig() {
         return new ConfigBuilder()
-            .forTeam("3481")
+            .forTeam("9999")
             // Channels
             .addChannel(1, "backLights", 30)
                 .addStripZone("left-side", 30, false)
