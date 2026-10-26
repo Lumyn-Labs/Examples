@@ -475,17 +475,12 @@ def demo_matrix_display(cx: ConnectorXAnimate) -> None:
 
     for text, duration in messages:
         print(f"  Displaying: {text}")
-        try:
-            leds.set_matrix_text(
-                ZONE_MATRIX,
-                text,
-                (0, 255, 0),  # Green text
-                lumyn_sdk.MatrixTextScrollDirection.LEFT,
-                50  # Scroll speed
-            )
-        except Exception as e:
-            print(f"  Matrix text not supported: {e}")
-            return
+        (leds.set_text(text)
+             .for_zone(ZONE_MATRIX)
+             .with_color((0, 255, 0))  # Green text
+             .with_direction(lumyn_sdk.MatrixTextScrollDirection.LEFT)
+             .with_delay(50)  # Scroll speed
+             .run_once(False))
         time.sleep(duration)
 
 

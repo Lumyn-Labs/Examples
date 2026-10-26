@@ -37,7 +37,6 @@ Included examples:
 - `connectorx_basic.py`
 - `connectorx_animate.py`
 - `device_comparison.py`
-- `handshake_basic.py`
 - `matrix_text_advanced.py`
 - `modules_typed.py`
 - `config_builder_basic.py`

@@ -122,7 +122,7 @@ Examples:
                 print("Failed to connect to device!", file=sys.stderr)
                 return 1
 
-            if cx.apply_configuration(config):
+            if cx.apply_configuration_json(SerializeConfigToJson(config)):
                 print("Configuration applied successfully!")
             else:
                 print("Failed to apply configuration", file=sys.stderr)
