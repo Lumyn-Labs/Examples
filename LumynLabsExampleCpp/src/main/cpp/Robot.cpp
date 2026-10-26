@@ -3,14 +3,14 @@
 
 #include "Robot.h"
 
-#include <frc/RobotBase.h>
-#include <units/time.h>
+#include <wpi/framework/RobotBase.hpp>
+#include <wpi/units/time.hpp>
 
 #include <lumyn/connection/USBPort.h>
 
-void Robot::RobotInit() {
+Robot::Robot() {
   m_leds.Connect(lumyn::connection::USBPort::kUSB1);
-  if (frc::RobotBase::IsSimulation()) {
+  if (wpi::RobotBase::IsSimulation()) {
     ApplyConfig();
   }
 
@@ -78,7 +78,7 @@ void Robot::AutonomousInit() {
       .ForGroup("climbers").WithColor(Color8(138, 43, 226)).WithDelay(50_ms).RunOnce(false);
   m_leds.SetText("AUTO")
       .ForZone("front-matrix").WithColor(kSecondary)
-      .WithDirection(lumyn::internal::Command::LED::MatrixTextScrollDirection::LEFT)
+      .WithDirection(lumyn::led::MatrixTextScrollDirection::LEFT)
       .WithDelay(100_ms).RunOnce(false);
 }
 
@@ -114,27 +114,27 @@ void Robot::TeleopPeriodic() {
   if (Pressed(m_controller.GetYButton(), m_lastY)) {
     m_leds.SetText("GO TEAM!")
         .ForGroup("matrices").WithColor(kSecondary)
-        .WithDirection(lumyn::internal::Command::LED::MatrixTextScrollDirection::LEFT)
+        .WithDirection(lumyn::led::MatrixTextScrollDirection::LEFT)
         .WithDelay(80_ms).RunOnce(false);
   }
   m_lastY = m_controller.GetYButton();
 
   
-  if (Pressed(m_controller.GetLeftBumper(), m_lastLB)) {
+  if (Pressed(m_controller.GetLeftBumperButton(), m_lastLB)) {
     m_leds.SetAnimation(lumyn::led::Animation::Sparkle)
         .ForGroup("climbers").WithColor(kAccent).WithDelay(100_ms).RunOnce(false);
   }
-  m_lastLB = m_controller.GetLeftBumper();
+  m_lastLB = m_controller.GetLeftBumperButton();
 
   
-  if (Pressed(m_controller.GetRightBumper(), m_lastRB)) {
+  if (Pressed(m_controller.GetRightBumperButton(), m_lastRB)) {
     m_leds.SetAnimation(lumyn::led::Animation::Heartbeat)
         .ForGroup("climbers").WithColor(Color8(255, 0, 50)).WithDelay(30_ms).RunOnce(false);
   }
-  m_lastRB = m_controller.GetRightBumper();
+  m_lastRB = m_controller.GetRightBumperButton();
 
   
-  bool lt = m_controller.GetLeftTriggerAxis() > 0.5;
+  bool lt = m_controller.GetLeftTrigger() > 0.5;
   if (Pressed(lt, m_lastLT)) {
     m_leds.SetAnimationSequence("front-matrix", "celebrate");
     m_leds.SetGroupAnimationSequence("climbers", "celebrate");
@@ -142,7 +142,7 @@ void Robot::TeleopPeriodic() {
   m_lastLT = lt;
 
   
-  bool rt = m_controller.GetRightTriggerAxis() > 0.5;
+  bool rt = m_controller.GetRightTrigger() > 0.5;
   if (Pressed(rt, m_lastRT)) {
     m_leds.SetImageSequence("robot")
         .ForZone("front-matrix").WithColor(kPrimary).SetColor(false).RunOnce(false);
@@ -150,18 +150,18 @@ void Robot::TeleopPeriodic() {
   m_lastRT = rt;
 
   
-  if (Pressed(m_controller.GetStartButton(), m_lastStart)) {
+  if (Pressed(m_controller.GetMenuButton(), m_lastStart)) {
     m_leds.SetGroupColor("climbers", kPrimary);
     m_leds.SetGroupColor("matrices", kPrimary);
   }
-  m_lastStart = m_controller.GetStartButton();
+  m_lastStart = m_controller.GetMenuButton();
 
   
-  if (Pressed(m_controller.GetBackButton(), m_lastBack)) {
-    m_leds.SetGroupColor("climbers", frc::Color{0, 0, 0});
-    m_leds.SetGroupColor("matrices", frc::Color{0, 0, 0});
+  if (Pressed(m_controller.GetViewButton(), m_lastBack)) {
+    m_leds.SetGroupColor("climbers", wpi::util::Color{0, 0, 0});
+    m_leds.SetGroupColor("matrices", wpi::util::Color{0, 0, 0});
   }
-  m_lastBack = m_controller.GetBackButton();
+  m_lastBack = m_controller.GetViewButton();
 
   if (Pressed(m_controller.GetRightStickButton(), m_lastRS)) {
     m_directLedEnabled = !m_directLedEnabled;
@@ -172,6 +172,6 @@ void Robot::TeleopPeriodic() {
   m_lastRS = m_controller.GetRightStickButton();
 }
 
-#ifndef RUNNING_FRC_TESTS
-int main() { return frc::StartRobot<Robot>(); }
+#ifndef RUNNING_WPILIB_TESTS
+int main() { return wpi::StartRobot<Robot>(); }
 #endif
