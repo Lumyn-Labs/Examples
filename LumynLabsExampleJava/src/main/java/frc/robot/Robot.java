@@ -1,6 +1,3 @@
-// Copyright (c) Lumyn Labs. All Rights Reserved.
-// Licensed under the MIT License. See LICENSE in the project root.
-
 package frc.robot;
 
 import com.lumynlabs.connection.usb.USBPort;

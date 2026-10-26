@@ -1,6 +1,3 @@
-// Copyright (c) Lumyn Labs. All Rights Reserved.
-// Licensed under the MIT License. See LICENSE in the project root.
-
 #include "Robot.h"
 
 #include <wpi/framework/RobotBase.hpp>
