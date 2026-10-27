@@ -133,52 +133,47 @@ def example_animations(cx: ConnectorX) -> None:
 
     # Rainbow animation - cycles through all colors
     print("Running RAINBOW ROLL animation...")
-    leds.set_animation(
-        ZONE_MAIN,
-        Animation.RainbowRoll,
-        (0, 0, 0),  # Color not used for rainbow
-        50  # Delay in ms between frames
-    )
+    (leds.set_animation(Animation.RainbowRoll)
+         .for_zone(ZONE_MAIN)
+         .with_color((0, 0, 0))
+         .with_delay(50)
+         .execute())  # Color not used for rainbow # Delay in ms between frames
     time.sleep(3.0)
 
     # Breathing animation - fades in and out
     print("Running BREATHE animation (blue)...")
-    leds.set_animation(
-        ZONE_MAIN,
-        Animation.Breathe,
-        (0, 0, 255),  # Blue
-        30  # Faster breathing
-    )
+    (leds.set_animation(Animation.Breathe)
+         .for_zone(ZONE_MAIN)
+         .with_color((0, 0, 255))
+         .with_delay(30)
+         .execute())  # Blue # Faster breathing
     time.sleep(3.0)
 
     # Blink animation
     print("Running BLINK animation (red)...")
-    leds.set_animation(
-        ZONE_MAIN,
-        Animation.Blink,
-        (255, 0, 0),  # Red
-        500  # 500ms on/off
-    )
+    (leds.set_animation(Animation.Blink)
+         .for_zone(ZONE_MAIN)
+         .with_color((255, 0, 0))
+         .with_delay(500)
+         .execute())  # Red # 500ms on/off
     time.sleep(3.0)
 
     # Chase animation - LEDs light up in sequence
     print("Running CHASE animation (green)...")
-    leds.set_animation(
-        ZONE_MAIN,
-        Animation.Chase,
-        (0, 255, 0),  # Green
-        50
-    )
+    (leds.set_animation(Animation.Chase)
+         .for_zone(ZONE_MAIN)
+         .with_color((0, 255, 0))
+         .with_delay(50)
+         .execute())  # Green
     time.sleep(3.0)
 
     # Fire animation - simulates fire effect
     print("Running FIRE animation...")
-    leds.set_animation(
-        ZONE_MAIN,
-        Animation.Fire,
-        (255, 100, 0),  # Orange base
-        30
-    )
+    (leds.set_animation(Animation.Fire)
+         .for_zone(ZONE_MAIN)
+         .with_color((255, 100, 0))
+         .with_delay(30)
+         .execute())  # Orange base
     time.sleep(3.0)
 
 
@@ -257,12 +252,11 @@ def example_all_animations(cx: ConnectorX) -> None:
 
     for animation, name, color in animations:
         print(f"  Playing: {name}")
-        leds.set_animation(
-            ZONE_MAIN,
-            animation,
-            color,
-            40
-        )
+        (leds.set_animation(animation)
+             .for_zone(ZONE_MAIN)
+             .with_color(color)
+             .with_delay(40)
+             .execute())
         time.sleep(2.0)
 
     print("Animation demo complete!")

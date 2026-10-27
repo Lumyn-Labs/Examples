@@ -1,6 +1,3 @@
-// Copyright (c) Lumyn Labs. All Rights Reserved.
-// Licensed under the MIT License. See LICENSE in the project root.
-
 package frc.robot;
 
 import com.lumynlabs.connection.usb.USBPort;
@@ -10,17 +7,17 @@ import com.lumynlabs.domain.led.Animation;
 import com.lumynlabs.domain.led.DirectLED;
 import com.lumynlabs.domain.led.MatrixTextScrollDirection;
 
-import edu.wpi.first.units.Units;
-import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import edu.wpi.first.wpilibj.LEDPattern;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj.util.Color8Bit;
+import org.wpilib.units.Units;
+import org.wpilib.units.measure.Distance;
+import org.wpilib.hardware.led.AddressableLEDBuffer;
+import org.wpilib.hardware.led.LEDPattern;
+import org.wpilib.framework.TimedRobot;
+import org.wpilib.driverstation.XboxController;
+import org.wpilib.util.Color;
+import org.wpilib.util.Color8Bit;
 
-import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.MetersPerSecond;
+import static org.wpilib.units.Units.Meters;
+import static org.wpilib.units.Units.MetersPerSecond;
 
 /**
  * Lumyn Labs ConnectorXAnimate Demo
@@ -43,15 +40,14 @@ public class Robot extends TimedRobot {
 
   private static final Distance kLedSpacing = Meters.of(1.0 / 120.0);
   private final LEDPattern mRainbow = LEDPattern.rainbow(255, 128);
-  private final LEDPattern mScrollingRainbow = mRainbow.scrollAtAbsoluteSpeed(MetersPerSecond.of(0.1), kLedSpacing);
+  private final LEDPattern mScrollingRainbow = mRainbow.scrollAtAbsoluteVelocity(MetersPerSecond.of(0.1), kLedSpacing);
 
   private boolean m_lastA, m_lastB, m_lastX, m_lastY;
   private boolean m_lastLB, m_lastRB, m_lastLT, m_lastRT;
   private boolean m_lastStart, m_lastBack;
   private boolean m_lastRS;
 
-  @Override
-  public void robotInit() {
+  public Robot() {
     m_leds.Connect(USBPort.kUSB1);
     if (isSimulation()) {
       m_leds.ApplyConfiguration(buildConfig());
@@ -174,7 +170,7 @@ public class Robot extends TimedRobot {
     m_lastRB = m_controller.getRightBumperButton();
 
     
-    boolean lt = m_controller.getLeftTriggerAxis() > 0.5;
+    boolean lt = m_controller.getLeftTrigger() > 0.5;
     if (pressed(lt, m_lastLT)) {
       m_leds.leds.SetAnimationSequence("front-matrix", "celebrate");
       m_leds.leds.SetGroupAnimationSequence("climbers", "celebrate");
@@ -182,7 +178,7 @@ public class Robot extends TimedRobot {
     m_lastLT = lt;
 
     
-    boolean rt = m_controller.getRightTriggerAxis() > 0.5;
+    boolean rt = m_controller.getRightTrigger() > 0.5;
     if (pressed(rt, m_lastRT)) {
       m_leds.leds.SetImageSequence("robot")
           .ForZone("front-matrix").WithColor(kPrimary).SetColor(false).RunOnce(false);
@@ -190,18 +186,18 @@ public class Robot extends TimedRobot {
     m_lastRT = rt;
 
     
-    if (pressed(m_controller.getStartButton(), m_lastStart)) {
+    if (pressed(m_controller.getMenuButton(), m_lastStart)) {
       m_leds.leds.SetGroupColor("climbers", kPrimary);
       m_leds.leds.SetGroupColor("matrices", kPrimary);
     }
-    m_lastStart = m_controller.getStartButton();
+    m_lastStart = m_controller.getMenuButton();
 
     
-    if (pressed(m_controller.getBackButton(), m_lastBack)) {
+    if (pressed(m_controller.getViewButton(), m_lastBack)) {
       m_leds.leds.SetGroupColor("climbers", new Color(0, 0, 0));
       m_leds.leds.SetGroupColor("matrices", new Color(0, 0, 0));
     }
-    m_lastBack = m_controller.getBackButton();
+    m_lastBack = m_controller.getViewButton();
 
     if (pressed(m_controller.getRightStickButton(), m_lastRS)) {
       m_directLedEnabled = !m_directLedEnabled;
@@ -217,8 +213,8 @@ public class Robot extends TimedRobot {
 
   @Override public void disabledPeriodic() {}
   @Override public void autonomousPeriodic() {}
-  @Override public void testInit() {}
-  @Override public void testPeriodic() {}
+  @Override public void utilityInit() {}
+  @Override public void utilityPeriodic() {}
   @Override public void simulationInit() {}
   @Override public void simulationPeriodic() {}
 }

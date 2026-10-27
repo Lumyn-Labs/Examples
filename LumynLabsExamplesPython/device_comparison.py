@@ -107,7 +107,11 @@ def demonstrate_connectorx_animate(port: str) -> None:
         cx_animate.leds.set_color("zone1", (0, 0, 255))
         
         print("   Running animation...")
-        cx_animate.leds.set_animation("zone1", Animation.Breathe, (0, 255, 0), 30)
+        (cx_animate.leds.set_animation(Animation.Breathe)
+             .for_zone("zone1")
+             .with_color((0, 255, 0))
+             .with_delay(30)
+             .execute())
         
         # Demonstrate DirectLED (works for both device types)
         print("\n2. DirectLED Support:")

@@ -2,6 +2,8 @@
 
 This repository contains examples that demonstrate how to use Lumyn Labs devices with WPILib. Each example is fully functional and can be run in simulation or on a real robot. Both Java and C++ implementations are provided with identical functionality.
 
+The WPILib examples use WPILib 2027.0.0-alpha-8 (GradleRIO 2027.0.0-alpha-8, Java 25) and run on SystemCore.
+
 ## Controls
 
 The examples use an Xbox controller to trigger different effects:
@@ -16,8 +18,8 @@ The examples use an Xbox controller to trigger different effects:
 | RB | Heartbeat animation on climbers |
 | LT | Play "celebrate" sequence |
 | RT | Play image sequence on front matrix |
-| Start | Set climbers and matrices to primary color |
-| Back | Turn off climbers and matrices |
+| Menu | Set climbers and matrices to primary color |
+| View | Turn off climbers and matrices |
 | RS | Toggle DirectLED rainbow on left climber |
 
 ## Running on Hardware
@@ -35,7 +37,6 @@ Included examples:
 - `connectorx_basic.py`
 - `connectorx_animate.py`
 - `device_comparison.py`
-- `handshake_basic.py`
 - `matrix_text_advanced.py`
 - `modules_typed.py`
 - `config_builder_basic.py`

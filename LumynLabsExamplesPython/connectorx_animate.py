@@ -217,22 +217,20 @@ class RobotLEDController:
     def _show_test(self) -> None:
         """Test: Rainbow pattern."""
         print(f"  LED State: TEST")
-        self.leds.set_group_animation(
-            self.group,
-            Animation.RainbowCycle,
-            AnimationPresets.neutral_white(),
-            40
-        )
+        (self.leds.set_animation(Animation.RainbowCycle)
+             .for_group(self.group)
+             .with_color(AnimationPresets.neutral_white())
+             .with_delay(40)
+             .execute())
 
     def _show_estopped(self) -> None:
         """E-Stopped: Fast red blink."""
         print(f"  LED State: E-STOPPED")
-        self.leds.set_group_animation(
-            self.group,
-            Animation.Blink,
-            AnimationPresets.error_red(),
-            100  # Fast blink
-        )
+        (self.leds.set_animation(Animation.Blink)
+             .for_group(self.group)
+             .with_color(AnimationPresets.error_red())
+             .with_delay(100)
+             .execute())  # Fast blink
 
     def _show_connected(self) -> None:
         """Connected: Run startup sequence."""
@@ -242,12 +240,11 @@ class RobotLEDController:
     def _show_disconnected(self) -> None:
         """Disconnected: Slow orange pulse."""
         print(f"  LED State: DISCONNECTED")
-        self.leds.set_group_animation(
-            self.group,
-            Animation.Pulse,
-            AnimationPresets.warning_orange(),
-            80
-        )
+        (self.leds.set_animation(Animation.Pulse)
+             .for_group(self.group)
+             .with_color(AnimationPresets.warning_orange())
+             .with_delay(80)
+             .execute())
 
     def _show_error(self) -> None:
         """Error: Run error sequence."""
@@ -317,10 +314,11 @@ def demo_zone_control(cx: ConnectorXAnimate) -> None:
     print("\nPattern 1: Sequential zone activation...")
     for zone in ALL_STRIP_ZONES:
         print(f"  Activating: {zone}")
-        leds.set_animation(
-            zone, Animation.FadeIn,
-            (0, 255, 0), 30
-        )
+        (leds.set_animation(Animation.FadeIn)
+             .for_zone(zone)
+             .with_color((0, 255, 0))
+             .with_delay(30)
+             .execute())
         time.sleep(0.5)
     time.sleep(1.0)
 
@@ -344,20 +342,22 @@ def demo_zone_control(cx: ConnectorXAnimate) -> None:
     print("\nPattern 4: Clockwise chase effect...")
     for _ in range(3):
         for zone in CORNER_ZONES:
-            leds.set_animation(
-                zone, Animation.Pulse,
-                (255, 255, 255), 50
-            )
+            (leds.set_animation(Animation.Pulse)
+                 .for_zone(zone)
+                 .with_color((255, 255, 255))
+                 .with_delay(50)
+                 .execute())
             time.sleep(0.3)
     time.sleep(1.0)
 
     # Pattern 5: Synchronized all channels
     print("\nPattern 5: All zones synchronized rainbow...")
     for zone in ALL_STRIP_ZONES:
-        leds.set_animation(
-            zone, Animation.RainbowCycle,
-            (0, 0, 0), 40
-        )
+        (leds.set_animation(Animation.RainbowCycle)
+             .for_zone(zone)
+             .with_color((0, 0, 0))
+             .with_delay(40)
+             .execute())
     time.sleep(4.0)
 
 
@@ -408,46 +408,52 @@ def demo_reactive_effects(cx: ConnectorXAnimate) -> None:
 
     # Event: Ball detected by intake
     print("\n[EVENT] Ball detected by intake!")
-    leds.set_animation(
-        ZONE_FRONT_LEFT, Animation.Pulse,
-        (255, 255, 0), 50
-    )
-    leds.set_animation(
-        ZONE_FRONT_RIGHT, Animation.Pulse,
-        (255, 255, 0), 50
-    )
+    (leds.set_animation(Animation.Pulse)
+         .for_zone(ZONE_FRONT_LEFT)
+         .with_color((255, 255, 0))
+         .with_delay(50)
+         .execute())
+    (leds.set_animation(Animation.Pulse)
+         .for_zone(ZONE_FRONT_RIGHT)
+         .with_color((255, 255, 0))
+         .with_delay(50)
+         .execute())
     time.sleep(1.5)
     leds.set_group_color(GROUP_FRONT, base_color)
 
     # Event: Ball scored
     print("\n[EVENT] Ball scored!")
-    leds.set_group_animation(
-        GROUP_ALL, Animation.Comet,
-        (0, 255, 0), 30
-    )
+    (leds.set_animation(Animation.Comet)
+         .for_group(GROUP_ALL)
+         .with_color((0, 255, 0))
+         .with_delay(30)
+         .execute())
     time.sleep(2.0)
     leds.set_group_color(GROUP_ALL, base_color)
 
     # Event: Low battery warning
     print("\n[EVENT] Low battery warning!")
     for _ in range(3):
-        leds.set_group_animation(
-            GROUP_ALL, Animation.Blink,
-            (255, 165, 0), 200
-        )
+        (leds.set_animation(Animation.Blink)
+             .for_group(GROUP_ALL)
+             .with_color((255, 165, 0))
+             .with_delay(200)
+             .execute())
         time.sleep(0.6)
     leds.set_group_color(GROUP_ALL, base_color)
 
     # Event: Target locked (scanner on front, pulse on rear)
     print("\n[EVENT] Target locked!")
-    leds.set_group_animation(
-        GROUP_FRONT, Animation.Scanner,
-        (255, 0, 0), 40
-    )
-    leds.set_group_animation(
-        GROUP_REAR, Animation.Pulse,
-        (255, 0, 0), 60
-    )
+    (leds.set_animation(Animation.Scanner)
+         .for_group(GROUP_FRONT)
+         .with_color((255, 0, 0))
+         .with_delay(40)
+         .execute())
+    (leds.set_animation(Animation.Pulse)
+         .for_group(GROUP_REAR)
+         .with_color((255, 0, 0))
+         .with_delay(60)
+         .execute())
     time.sleep(2.5)
     leds.set_group_color(GROUP_ALL, base_color)
 
@@ -475,17 +481,12 @@ def demo_matrix_display(cx: ConnectorXAnimate) -> None:
 
     for text, duration in messages:
         print(f"  Displaying: {text}")
-        try:
-            leds.set_matrix_text(
-                ZONE_MATRIX,
-                text,
-                (0, 255, 0),  # Green text
-                lumyn_sdk.MatrixTextScrollDirection.LEFT,
-                50  # Scroll speed
-            )
-        except Exception as e:
-            print(f"  Matrix text not supported: {e}")
-            return
+        (leds.set_text(text)
+             .for_zone(ZONE_MATRIX)
+             .with_color((0, 255, 0))  # Green text
+             .with_direction(lumyn_sdk.MatrixTextScrollDirection.LEFT)
+             .with_delay(50)  # Scroll speed
+             .run_once(False))
         time.sleep(duration)
 
 
@@ -505,34 +506,38 @@ def demo_underglow(cx: ConnectorXAnimate) -> None:
 
     # Effect 1: Lava flow
     print("\n  Effect 1: Lava flow")
-    leds.set_animation(
-        ZONE_UNDERGLOW, Animation.Lava,
-        (255, 50, 0), 30
-    )
+    (leds.set_animation(Animation.Lava)
+         .for_zone(ZONE_UNDERGLOW)
+         .with_color((255, 50, 0))
+         .with_delay(30)
+         .execute())
     time.sleep(3.0)
 
     # Effect 2: Plasma
     print("\n  Effect 2: Plasma")
-    leds.set_animation(
-        ZONE_UNDERGLOW, Animation.Plasma,
-        (100, 0, 255), 40
-    )
+    (leds.set_animation(Animation.Plasma)
+         .for_zone(ZONE_UNDERGLOW)
+         .with_color((100, 0, 255))
+         .with_delay(40)
+         .execute())
     time.sleep(3.0)
 
     # Effect 3: Fire
     print("\n  Effect 3: Fire")
-    leds.set_animation(
-        ZONE_UNDERGLOW, Animation.Fire,
-        (255, 100, 0), 30
-    )
+    (leds.set_animation(Animation.Fire)
+         .for_zone(ZONE_UNDERGLOW)
+         .with_color((255, 100, 0))
+         .with_delay(30)
+         .execute())
     time.sleep(3.0)
 
     # Effect 4: Rainbow
     print("\n  Effect 4: Rainbow Roll")
-    leds.set_animation(
-        ZONE_UNDERGLOW, Animation.RainbowRoll,
-        (0, 0, 0), 20
-    )
+    (leds.set_animation(Animation.RainbowRoll)
+         .for_zone(ZONE_UNDERGLOW)
+         .with_color((0, 0, 0))
+         .with_delay(20)
+         .execute())
     time.sleep(3.0)
 
 
